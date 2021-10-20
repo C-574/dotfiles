@@ -1,0 +1,20 @@
+{
+    "workbench.colorTheme": "Panda Syntax",
+    "editor.fontFamily": "'Cascadia Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontLigatures": true,
+    "security.workspace.trust.enabled": false,
+    "telemetry.telemetryLevel": "off",
+    "editor.minimap.enabled": false,
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.tabSize": 2,
+    "[csharp]": {
+        "editor.tabSize": 4,
+    },
+    "editor.linkedEditing": true,
+    "editor.renderControlCharacters": true,
+    "editor.renderWhitespace": "boundary",
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "debug.onTaskErrors": "showErrors",
+}
