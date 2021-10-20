@@ -1,0 +1,6 @@
+README.md
+.oh-my-zsh/cache/**
+
+{{ if ne .chezmoi.os "linux" }}
+.local/share/fonts
+{{ end }}
