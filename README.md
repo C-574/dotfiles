@@ -10,7 +10,6 @@ or chezmoi's run once scripts.
 | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | [git](https://git-scm.com/)                                   | `sudo apt install git`                                                                          |
 | [chezmoi](https://www.chezmoi.io/)                            | `snap install chezmoi --classic`                                                                |
-| [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh/wiki)          | `sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"` |
 | [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)  | See linked section of the docs                                                                  |
 
 > **NOTE:** After installing zsh and oh-my-zsh you need to log out and back in if you changed it to be your default shell.
