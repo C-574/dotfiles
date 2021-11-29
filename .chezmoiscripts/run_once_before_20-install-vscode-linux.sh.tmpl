@@ -1,0 +1,51 @@
+{{ if (eq .chezmoi.os "linux") -}}
+{{   if (eq .chezmoi.osRelease.id "debian" "ubuntu") -}}
+#!/bin/bash
+
+set -euo pipefail
+
+# Default extensions to install
+# Use code --list-extensions to see all installed extensions
+extensions=(
+    EditorConfig.EditorConfig
+    esbenp.prettier-vscode
+    mikestead.dotenv
+    PKief.material-icon-theme
+    streetsidesoftware.code-spell-checker
+    tinkertrain.theme-panda
+    yzhang.markdown-all-in-one
+)
+
+tempdir=$(mktemp -d)
+cleanup() {
+    popd > /dev/null
+    rm -rf ${tempdir}
+}
+trap cleanup EXIT
+
+pushd ${tempdir} > /dev/null
+
+# Install prerequisite packages
+sudo apt-get install --yes \
+	apt-transport-https \
+	software-properties-common \
+    wget
+
+# Add keys
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+
+# Add sources
+sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+
+# Install VS Code package
+sudo apt update
+sudo apt install --yes code
+
+# Install default extensions
+for extension in ${extensions[@]}; do
+	code --force --install-extension $extension
+done
+
+{{   end -}}
+{{ end -}}
