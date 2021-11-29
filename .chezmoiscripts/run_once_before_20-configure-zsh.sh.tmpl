@@ -1,0 +1,12 @@
+{{ if (eq .chezmoi.os "linux") -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+yellow='\e[0;33m'
+echo -e "${yellow}Enter your password to set ZSH as your default shell"
+
+# Set ZSH as the default shell
+chsh -s $(which zsh)
+
+{{ end -}}
