@@ -1,0 +1,10 @@
+{{ if (eq .chezmoi.os "linux") -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+# Restore the preferences of guake from the configuration file when the config changes
+# guake.conf hash: {{ include "guake.conf" | sha256sum }}
+guake --restore-preferences={{ joinPath .chezmoi.sourceDir "guake.conf" | quote }}
+
+{{ end -}}

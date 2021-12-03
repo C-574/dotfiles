@@ -1,4 +1,5 @@
 README.md
+guake.conf
 .oh-my-zsh/cache/**
 
 {{ if ne .chezmoi.os "linux" }}
