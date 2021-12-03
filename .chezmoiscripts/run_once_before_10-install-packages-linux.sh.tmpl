@@ -10,14 +10,18 @@ packages=(
 	wget
 	zsh
 	guake
+	gnome-system-monitor
+	htop
 )
-snaps=()
+snaps=(
+	mailspring
+)
 classic_snaps=()
 
 {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
 packages+=(
-    software-properties-common
-    apt-transport-https
+	software-properties-common
+	apt-transport-https
 )
 {{ end }}
 
