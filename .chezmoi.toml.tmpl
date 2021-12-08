@@ -1,6 +1,9 @@
+{{/* Feature toggles */}}
+{{- $personal := true -}}{{/* true if this machine should have personal secrets from Bitwarden. */}}
 {{- $name := promptString "Git name" -}}
 {{- $email := promptString "Git email" -}}
 
 [data]
+	personal = {{ $personal }}
 	name = {{ $name | quote }}
 	email = {{ $email | quote }}
