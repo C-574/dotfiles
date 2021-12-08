@@ -13,15 +13,19 @@ packages=(
 	gnome-system-monitor
 	htop
 )
-snaps=(
-	mailspring
-)
+snaps=()
 classic_snaps=()
 
 {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
 packages+=(
 	software-properties-common
 	apt-transport-https
+)
+{{ end }}
+
+{{ if (and (not .ephemeral) (not .headless)) }}
+snaps+=(
+	mailspring
 )
 {{ end }}
 

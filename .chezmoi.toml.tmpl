@@ -1,9 +1,13 @@
 {{/* Feature toggles */}}
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard, e.g. raspberry pis or server VMs. */}}
+{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance. Disabling this installs only the minimal set of applications. */}}
 {{- $personal := true -}}{{/* true if this machine should have personal secrets from Bitwarden. */}}
 {{- $name := promptString "Git name" -}}
 {{- $email := promptString "Git email" -}}
 
 [data]
+	headless = {{ $headless }}
+	ephemeral = {{ $ephemeral }}
 	personal = {{ $personal }}
 	name = {{ $name | quote }}
 	email = {{ $email | quote }}
