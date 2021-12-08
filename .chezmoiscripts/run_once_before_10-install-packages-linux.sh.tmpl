@@ -27,6 +27,12 @@ packages+=(
 snaps+=(
 	mailspring
 )
+
+{{	if .personal }}
+snaps+=(
+	spotify
+)
+{{	end }}
 {{ end }}
 
 for repository in ${repositories[@]}; do
