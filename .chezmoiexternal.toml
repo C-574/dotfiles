@@ -4,3 +4,11 @@
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
+[".nvm"]
+    type = "git-repo"
+    url = "https://github.com/nvm-sh/nvm.git"
+    refreshPeriod = "168h"
+    [".nvm".clone]
+        args = ["--depth", "1", "--branch", "v0.39.1"]
+    [".nvm".pull]
+        args = ["--ff-only", "--depth", "1"]
