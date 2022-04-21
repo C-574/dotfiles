@@ -1,0 +1,43 @@
+{{ if (eq .chezmoi.os "linux") -}}
+{{   if not .headless -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+tempdir=$(mktemp -d)
+cleanup() {
+    popd > /dev/null
+    rm -rf ${tempdir}
+}
+trap cleanup EXIT
+
+pushd ${tempdir} > /dev/null
+
+# Install the font in the fonts folder of the local user.
+font_dir=~/.local/share/fonts/cascadia-code
+
+# Set the current version of the font to install.
+# Update this if a newer version is released.
+current_cascadia_code_version=2111.01
+
+echo "Installing Cascadia Code v$current_cascadia_code_version"
+
+# Download latest release from github into the temp folder.
+curl -fLo $tempdir/$current_cascadia_code_version.zip \
+  https://github.com/microsoft/cascadia-code/releases/download/v$current_cascadia_code_version/CascadiaCode-$current_cascadia_code_version.zip \
+  && unzip -q -o "$tempdir/$current_cascadia_code_version.zip" -d $tempdir/$current_cascadia_code_version
+
+if $(fc-list | grep -i "Cascadia Code" &> /dev/null); then
+  echo "Cascadia Code is already installed. Removing existing version."
+  rm -rdf $font_dir
+fi
+
+# Copy all font files to the local user's font directory.
+mkdir -p $font_dir
+cp -r $tempdir/$current_cascadia_code_version/ttf/. $font_dir
+
+# Update the font cache
+fc-cache -vf
+
+{{   end -}}
+{{ end -}}
