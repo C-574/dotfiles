@@ -10,7 +10,6 @@ packages=(
 	wget
 	zsh
 	guake
-	gnome-system-monitor
 	htop
 )
 snaps=()
@@ -21,9 +20,19 @@ packages+=(
 	software-properties-common
 	apt-transport-https
 )
+{{ else if (eq .chezmoi.osRelease.id "fedora") }}
+# Enable free and non-free RPM Fusion repositories.
+repositories+=(
+	https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+	https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+)
 {{ end }}
 
 {{ if (and (not .ephemeral) (not .headless)) }}
+packages+=(
+	gnome-system-monitor
+)
+
 snaps+=(
 	mailspring
 )
@@ -35,15 +44,34 @@ snaps+=(
 {{	end }}
 {{ end }}
 
+{{ if (eq .chezmoi.osRelease.id "fedora") -}}
+groups=(
+	core
+)
+
+{{  if (not .headless) }}
+# Install multi-media codecs.
+groups+=(
+	multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+	sound-and-video
+)
+{{  end }}
+
+sudo dnf install -y ${repositories[@]}
+sudo dnf groupupdate -y ${groups[@]}
+
+sudo dnf update
+sudo dnf install -y ${packages[@]}
+
+{{ else if (eq (get .chezmoi.osRelease "idLike") "debian" "ubuntu") }}
 for repository in ${repositories[@]}; do
 	sudo add-apt-repository -y $repository
 done
 
 sudo apt update
-
 sudo apt install -y ${packages[@]}
+{{ end }}
 
-{{ if (eq .chezmoi.osRelease.id "ubuntu") }}
 for snap in ${snaps[@]}; do
 	sudo snap install $snap
 done
@@ -51,6 +79,5 @@ done
 for classic_snap in ${classic_snaps[@]}; do
 	sudo snap install $classic_snap --classic
 done
-{{ end }}
 
 {{ end -}}

@@ -1,5 +1,4 @@
 {{ if (eq .chezmoi.os "linux") -}}
-{{   if (eq .chezmoi.osRelease.idLike "debian" "ubuntu") -}}
 #!/bin/bash
 
 set -euo pipefail
@@ -16,6 +15,18 @@ extensions=(
     yzhang.markdown-all-in-one
 )
 
+{{   if (eq .chezmoi.osRelease.id "fedora") -}}
+# Import keys
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+
+# Add repository
+sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+
+# Install VS Code package
+sudo dnf update
+sudo dnf install -y code
+
+{{   else if (eq (get .chezmoi.osRelease "idLike") "debian" "ubuntu") -}}
 tempdir=$(mktemp -d)
 cleanup() {
     popd > /dev/null
@@ -41,11 +52,11 @@ sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/p
 # Install VS Code package
 sudo apt update
 sudo apt install --yes code
+{{   end -}}
 
 # Install default extensions
 for extension in ${extensions[@]}; do
 	code --force --install-extension $extension
 done
 
-{{   end -}}
 {{ end -}}

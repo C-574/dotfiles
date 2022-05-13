@@ -4,9 +4,14 @@
 set -eufo pipefail
 
 yellow='\e[0;33m'
-echo -e "${yellow}Enter your password to set ZSH as your default shell"
+white='\033[0m'
+echo -e "${yellow}Enter your password to set ZSH as your default shell${white}"
 
 # Set ZSH as the default shell
+{{ if (eq .chezmoi.osRelease.id "fedora") -}}
+sudo usermod -s $(which zsh) $USERNAME
+{{ else if (eq (get .chezmoi.osRelease "idLike") "debian" "ubuntu") }}
 chsh -s $(which zsh)
+{{ end }}
 
 {{ end -}}
